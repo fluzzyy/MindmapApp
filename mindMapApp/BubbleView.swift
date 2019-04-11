@@ -11,7 +11,7 @@ import UIKit
 
 protocol BubbleViewDelegate {
     func didSelect(_ bubbleView : BubbleView)
-    
+    func didEdit(_ bubbleView : BubbleView)
     
 }
 
@@ -20,6 +20,8 @@ class BubbleView: UIView {
     
     var lines = [LineView]()
     var delegate : BubbleViewDelegate?
+    var color : UIColor?
+    var label = UILabel()
     
     // MARK: INIT
     
@@ -29,20 +31,28 @@ class BubbleView: UIView {
         let size: CGFloat = 80
         let frame = CGRect(x: atPoint.x-size/2, y: atPoint.y-size/2, width: 80, height: 80)
         super.init(frame: frame)
+        backgroundColor = UIColor.random()
         
-        self.backgroundColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+      
         self.layer.cornerRadius = size/2
         self.clipsToBounds = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(didPanInBubble(_:)))
+        
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(didDoubleTapInBubble(_:)))
+        doubleTap.numberOfTapsRequired = 2
+        self.addGestureRecognizer(doubleTap)
+        
+        
         self.addGestureRecognizer(pan)
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapInBubble(_:)))
         self.addGestureRecognizer(tap)
+        
         //Skapa en label för din bubbla
-        let label = UILabel(frame: bounds)
+        label.frame = bounds
         label.textAlignment = .center
         label.numberOfLines = 3
         label.text = "Text"
-        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 15)
         self.addSubview(label)
     }
@@ -55,15 +65,29 @@ class BubbleView: UIView {
     
     @objc func didPanInBubble(_ gesture : UITapGestureRecognizer){
         
-        if gesture.state == .changed{
+         if gesture.state == .changed{
             
             self.center = gesture.location(in: superview)
             
             for line in lines{
                 line.update()
-            } //dwdsd
+            }
+        }else if gesture.state == .began{
+            superview?.bringSubviewToFront(self)
         }
-        //sds
+        
+    }
+    @objc func didDoubleTapInBubble(_ gesture: UITapGestureRecognizer) {
+        print("did double tap in bubble")
+        
+        guard  let bubble = gesture.view as? BubbleView else {
+            return
+        }
+        if delegate != nil {
+            delegate!.didEdit(bubble)
+        }
+        
+        
     }
     
     
@@ -72,7 +96,20 @@ class BubbleView: UIView {
         if delegate != nil{
             delegate!.didSelect(bubble)
         }
-       
+    }
+    func select(){
+        color = backgroundColor
+        backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+    }
+    func deselect(){
+        backgroundColor = color
+        
+    }
+    func delete(){
+        for line in lines{
+            line.removeFromSuperview()
+        }
+        removeFromSuperview()
         
     }
     //MARK: Draw
@@ -85,4 +122,19 @@ class BubbleView: UIView {
     }
     */
 
+}
+
+extension UIColor {
+    
+    static func random() -> UIColor{
+        
+        let randomRed = CGFloat(arc4random_uniform(256))/255.0
+         let randomGreen = CGFloat(arc4random_uniform(256))/255.0
+         let randomBlue = CGFloat(arc4random_uniform(256))/255.0
+        
+        
+        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
+        
+    }
+    
 }
