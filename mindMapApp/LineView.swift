@@ -15,7 +15,7 @@ class LineView: UIView {
     
     init(from : BubbleView, to : BubbleView) {
         super.init(frame: CGRect.zero)
-        backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        backgroundColor = UIColor.clear
         fromView = from
         toView = to
         update()
@@ -26,8 +26,7 @@ class LineView: UIView {
         // TODO: beräkna ny frame och kalla på utritning
         if fromView != nil && toView != nil {
              self.frame = fromView!.frame.union(toView!.frame)/*.insetBy(dx: fromView!.frame.size.width/2, dy: fromView!.frame.size.height/2)*/
-            
-            
+            self.setNeedsDisplay()
         }
         
     }
@@ -38,12 +37,31 @@ class LineView: UIView {
     }
     
 
-        /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
+    
+   
     override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
 
+            let path = UIBezierPath()
+            let origin = fromView!.center - frame.origin
+            let destination = toView!.center - frame.origin
+            let controlVector = CGPoint (x: (destination.x - origin.x) * 0.5, y: 0)
+        
+            path.move(to: origin) // förflytta sig till startpunkt
+            path.addCurve(to: destination, controlPoint1: origin + controlVector, controlPoint2: destination - controlVector)
+            path.lineWidth = 2
+            UIColor.random().setStroke()
+            path.stroke()
+
+    }
 }
+
+func + (left: CGPoint, right: CGPoint) -> CGPoint{
+    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+}
+
+
+
+func - (left: CGPoint, right: CGPoint) -> CGPoint{
+    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+}
+
