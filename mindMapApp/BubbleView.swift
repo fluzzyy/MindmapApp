@@ -61,9 +61,9 @@ class BubbleView: UIView {
             
             for line in lines{
                 line.update()
-            }
+            } //dwdsd
         }
-        
+        //sds
     }
     
     
