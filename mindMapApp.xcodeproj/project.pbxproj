@@ -12,6 +12,9 @@
 		E47299B4225F21AD00336D7A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47299B2225F21AD00336D7A /* Main.storyboard */; };
 		E47299B6225F21AE00336D7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E47299B5225F21AE00336D7A /* Assets.xcassets */; };
 		E47299B9225F21AE00336D7A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47299B7225F21AE00336D7A /* LaunchScreen.storyboard */; };
+		E47299C1225F35B400336D7A /* LineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E47299C0225F35B400336D7A /* LineView.xib */; };
+		E47299C3225F35CA00336D7A /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47299C2225F35CA00336D7A /* LineView.swift */; };
+		E47299C5225F360D00336D7A /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47299C4225F360D00336D7A /* BubbleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		E47299B5225F21AE00336D7A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E47299B8225F21AE00336D7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E47299BA225F21AE00336D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E47299C0225F35B400336D7A /* LineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LineView.xib; sourceTree = "<group>"; };
+		E47299C2225F35CA00336D7A /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
+		E47299C4225F360D00336D7A /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +63,12 @@
 				E47299AE225F21AD00336D7A /* AppDelegate.swift */,
 				E47299B0225F21AD00336D7A /* ViewController.swift */,
 				E47299B2225F21AD00336D7A /* Main.storyboard */,
+				E47299C2225F35CA00336D7A /* LineView.swift */,
+				E47299C4225F360D00336D7A /* BubbleView.swift */,
 				E47299B5225F21AE00336D7A /* Assets.xcassets */,
 				E47299B7225F21AE00336D7A /* LaunchScreen.storyboard */,
 				E47299BA225F21AE00336D7A /* Info.plist */,
+				E47299C0225F35B400336D7A /* LineView.xib */,
 			);
 			path = mindMapApp;
 			sourceTree = "<group>";
@@ -122,6 +131,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E47299C1225F35B400336D7A /* LineView.xib in Resources */,
 				E47299B9225F21AE00336D7A /* LaunchScreen.storyboard in Resources */,
 				E47299B6225F21AE00336D7A /* Assets.xcassets in Resources */,
 				E47299B4225F21AD00336D7A /* Main.storyboard in Resources */,
@@ -137,6 +147,8 @@
 			files = (
 				E47299B1225F21AD00336D7A /* ViewController.swift in Sources */,
 				E47299AF225F21AD00336D7A /* AppDelegate.swift in Sources */,
+				E47299C5225F360D00336D7A /* BubbleView.swift in Sources */,
+				E47299C3225F35CA00336D7A /* LineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
