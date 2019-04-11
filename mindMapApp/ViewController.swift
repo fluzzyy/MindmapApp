@@ -8,20 +8,39 @@
 
 import UIKit
 
-class ViewController: UIViewController,BubbleViewDelegate {
+class ViewController: UIViewController,BubbleViewDelegate, UIScrollViewDelegate {
   
     
 
      var selectedBubble : BubbleView?
+    var superScrollView : UIScrollView?
+    var superContentView : UIView?
 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        // configurerar scrollview
+        superScrollView = UIScrollView(frame: view.bounds)
+        superScrollView?.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        superScrollView?.delegate = self
+        let contentSize : CGFloat = 2000
+        superScrollView?.contentSize = CGSize(width: contentSize, height: contentSize)
+        superScrollView?.contentOffset = CGPoint(x: contentSize - view.frame.size.width/2, y: view.frame.size.height/2)
+        superScrollView?.minimumZoomScale = 0.5
+        superScrollView?.maximumZoomScale = 2.0
+        // konfigurera contentview
+        superContentView = UIView(frame: CGRect(x: 0, y: 0, width: contentSize, height: contentSize))
+        superScrollView?.addSubview(superContentView!)
+        // lägga till vår scrollvy i vår container
+        view.addSubview(superScrollView!)
+        
+        
         //  lägga till tapgesture för att skapa nya bubblor
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        view.addGestureRecognizer(tap)
+        superContentView!.addGestureRecognizer(tap)
 
     }
     func didEdit(_ bubble: BubbleView){
@@ -42,10 +61,10 @@ class ViewController: UIViewController,BubbleViewDelegate {
             selectedBubble?.deselect()
             selectedBubble = nil
         } else {
-            let tapPoint = gesture.location(in: view)
+            let tapPoint = gesture.location(in: superContentView)
             let bubble = BubbleView(tapPoint)
             bubble.delegate = self
-            view.addSubview(bubble)
+            superContentView!.addSubview(bubble)
             
         }
     }
@@ -57,9 +76,9 @@ class ViewController: UIViewController,BubbleViewDelegate {
                 //  delete bubble
                 bubbleView.delete()
             }else{
-                // COnnect bubbles
+                // Connect bubbles
                 let line = LineView(from: selectedBubble!, to: bubbleView)
-                view.insertSubview(line, at: 0)
+                superContentView!.insertSubview(line, at: 0)
                 selectedBubble?.lines.append(line)
                 bubbleView.lines.append(line)
             }
@@ -74,6 +93,11 @@ class ViewController: UIViewController,BubbleViewDelegate {
         }
     }
     
-   
+    //MARK:  UISCROLLVIEWdelegate
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return superContentView!
+    }
+    
 }
 
