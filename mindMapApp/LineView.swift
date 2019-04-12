@@ -23,9 +23,9 @@ class LineView: UIView {
     }
     
     func update(){
-        // TODO: beräkna ny frame och kalla på utritning
+        //  beräkna ny frame och kalla på utritning
         if fromView != nil && toView != nil {
-             self.frame = fromView!.frame.union(toView!.frame)/*.insetBy(dx: fromView!.frame.size.width/2, dy: fromView!.frame.size.height/2)*/
+             frame = fromView!.frame.union(toView!.frame)/*.insetBy(dx: fromView!.frame.size.width/2, dy: fromView!.frame.size.height/2)*/
             self.setNeedsDisplay()
         }
         
@@ -49,7 +49,7 @@ class LineView: UIView {
             path.move(to: origin) // förflytta sig till startpunkt
             path.addCurve(to: destination, controlPoint1: origin + controlVector, controlPoint2: destination - controlVector)
             path.lineWidth = 2
-            UIColor.random().setStroke()
+            fromView?.color?.setStroke()
             path.stroke()
 
     }

@@ -21,20 +21,45 @@ class BubbleView: UIView {
     var lines = [LineView]()
     var delegate : BubbleViewDelegate?
     var color : UIColor?
-    var label = UILabel()
+   
+    private var label = UILabel()
+   
+    var text : String{
+        get{
+            return label.text!
+            
+        }set(str){
+            label.text = str
+            updateFrame()
+        }
+    }
+    
+    //MARK: Selected property
+    
+    var selected : Bool = false {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
+    let minSize: CGFloat = 80
+    let maxWidth : CGFloat = 240
+    let padding : CGFloat = 8
+
+
     
     // MARK: INIT
     
     init(_ atPoint: CGPoint) {
         
         
-        let size: CGFloat = 80
-        let frame = CGRect(x: atPoint.x-size/2, y: atPoint.y-size/2, width: 80, height: 80)
+        let frame = CGRect(x: atPoint.x-minSize/2, y: atPoint.y-minSize/2, width: 80, height: 80)
         super.init(frame: frame)
-        backgroundColor = UIColor.random()
+        color = UIColor.random()
+        backgroundColor = UIColor.clear
         
       
-        self.layer.cornerRadius = size/2
+       // self.layer.cornerRadius = size/2
         self.clipsToBounds = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(didPanInBubble(_:)))
         
@@ -97,14 +122,7 @@ class BubbleView: UIView {
             delegate!.didSelect(bubble)
         }
     }
-    func select(){
-        color = backgroundColor
-        backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-    }
-    func deselect(){
-        backgroundColor = color
-        
-    }
+  
     func delete(){
         for line in lines{
             line.removeFromSuperview()
@@ -114,13 +132,38 @@ class BubbleView: UIView {
     }
     //MARK: Draw
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    func updateFrame(){
+        
+        // beräkna frame för label och vy
+        let labelSize = label.sizeThatFits(CGSize(width: maxWidth - padding * 2  ,
+                                                  height: minSize - padding * 2))
+        let bubbleWidth = max(minSize,
+                              labelSize.width + padding * 2)
+        
+        label.frame = CGRect(x: padding,
+                             y: padding,
+                             width: bubbleWidth - 2 * padding,
+                             height: minSize - 2 * padding)
+        
+        frame = CGRect(x: center.x - bubbleWidth / 2,
+                       y: center.y - minSize / 2,
+                       width: bubbleWidth,
+                       height: minSize)
+        
+        setNeedsDisplay()
+        
     }
-    */
+ 
+    override func draw(_ rect: CGRect) {
+    
+        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: [.bottomLeft,.topRight], cornerRadii: CGSize(width: bounds.size.width/2, height: bounds.size.height/2))
+        //Villkor ? SANT : Falskt
+        selected ? UIColor.yellow.setFill() : color?.setFill()
+        path.fill()
+        
+        
+    }
+ 
 
 }
 

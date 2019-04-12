@@ -46,11 +46,11 @@ class ViewController: UIViewController,BubbleViewDelegate, UIScrollViewDelegate 
     func didEdit(_ bubble: BubbleView){
         let textInput = UIAlertController(title: "Edit bubble text", message: "Enter the text you want in the bubble", preferredStyle: .alert)
         textInput.addTextField { (TextField) in
-           TextField.text = bubble.label.text
+           TextField.text = bubble.text
         }
         textInput.addAction(UIAlertAction(title: "Save", style: .default, handler: { (action) in
             let textField = textInput.textFields![0] as UITextField
-             bubble.label.text = textField.text
+             bubble.text = textField.text!
         }))
         self.present(textInput, animated: true, completion: nil)
     }
@@ -58,8 +58,8 @@ class ViewController: UIViewController,BubbleViewDelegate, UIScrollViewDelegate 
     @objc func didTap(_ gesture: UITapGestureRecognizer) {
         //Hitta CGPoint och lägg till bubbla.
                 if selectedBubble != nil {
-            selectedBubble?.deselect()
-            selectedBubble = nil
+            selectedBubble?.selected = false
+                    selectedBubble = nil
         } else {
             let tapPoint = gesture.location(in: superContentView)
             let bubble = BubbleView(tapPoint)
@@ -83,13 +83,13 @@ class ViewController: UIViewController,BubbleViewDelegate, UIScrollViewDelegate 
                 bubbleView.lines.append(line)
             }
             //  Deselect selectedBubble
-            selectedBubble?.deselect()
+            selectedBubble?.selected = false
             selectedBubble = nil
             
         }else{
             
             selectedBubble = bubbleView
-            selectedBubble?.select()
+            selectedBubble?.selected = true
         }
     }
     
